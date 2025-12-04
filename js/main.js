@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Demo mode notification
-    if (CONFIG.app.demoMode) {
+    if (typeof CONFIG !== 'undefined' && CONFIG.app.demoMode) {
         console.log('%c🍌 Climb Light Demo Mode', 'font-size: 16px; color: #667eea; font-weight: bold;');
         console.log('%cTo use real AI analysis, add your OpenAI API key in js/config.js and set demoMode to false', 'color: #718096;');
     }
