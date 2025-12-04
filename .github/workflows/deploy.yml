@@ -23,7 +23,11 @@ jobs:
       
       - name: Inject API Key
         run: |
+          echo "Before replacement:"
+          grep "apiKey:" js/config.js
           sed -i "s/YOUR_GOOGLE_GEMINI_API_KEY_HERE/${{ secrets.GEMINI_API_KEY }}/g" js/config.js
+          echo "After replacement:"
+          grep "apiKey:" js/config.js
         
       - name: Setup Pages
         uses: actions/configure-pages@v4
