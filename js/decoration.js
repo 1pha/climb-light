@@ -51,65 +51,63 @@ class FrameDecorator {
         });
     }
 
-    // Add nanobanana stickers to canvas
-    async addStickers(ctx, width, height) {
-        const count = CONFIG.decorations.nanobananaCount;
-        const loadedStickers = await this.loadStickers();
+    // Draw a programmatic Nanobanana sticker
+    drawNanobanana(ctx, x, y, size, rotation) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate((rotation * Math.PI) / 180);
 
-        for (let i = 0; i < count; i++) {
-            // Select random sticker
-            const sticker = loadedStickers[Math.floor(Math.random() * loadedStickers.length)];
+        const s = size / 100; // Scale factor based on 100px reference size
+        ctx.scale(s, s);
 
-            // Calculate random position (avoid edges)
-            const margin = 50;
-            const x = margin + Math.random() * (width - 2 * margin - sticker.width);
-            const y = margin + Math.random() * (height - 2 * margin - sticker.height);
+        // Draw Banana Body
+        ctx.beginPath();
+        ctx.moveTo(-20, -40);
+        ctx.quadraticCurveTo(40, -10, 20, 50); // Outer curve
+        ctx.quadraticCurveTo(-10, 40, -30, 0); // Inner curve
+        ctx.quadraticCurveTo(-35, -20, -20, -40); // Top join
+        ctx.closePath();
 
-            // Apply transformations
-            ctx.save();
-            ctx.translate(x + sticker.width / 2, y + sticker.height / 2);
+        ctx.fillStyle = '#FFD700'; // Banana Yellow
+        ctx.fill();
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = '#FFFFFF'; // White outline
+        ctx.stroke();
 
-            // Random rotation
-            if (CONFIG.decorations.randomRotation) {
-                const rotation = this.randomInRange(
-                    CONFIG.decorations.rotationRange[0],
-                    CONFIG.decorations.rotationRange[1]
-                ) * Math.PI / 180;
-                ctx.rotate(rotation);
-            }
+        // Sunglasses
+        ctx.fillStyle = 'black';
+        ctx.beginPath();
+        ctx.moveTo(-15, -10);
+        ctx.lineTo(5, -5);
+        ctx.lineTo(25, -15);
+        ctx.lineTo(22, 5);
+        ctx.lineTo(2, 8);
+        ctx.lineTo(-18, 5);
+        ctx.closePath();
+        ctx.fill();
 
-            // Random scale
-            let scale = 1;
-            if (CONFIG.decorations.randomScale) {
-                scale = this.randomInRange(
-                    CONFIG.decorations.scaleRange[0],
-                    CONFIG.decorations.scaleRange[1]
-                );
-                ctx.scale(scale, scale);
-            }
+        // Smile
+        ctx.beginPath();
+        ctx.arc(0, 15, 10, 0.2 * Math.PI, 0.8 * Math.PI);
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 2;
+        ctx.stroke();
 
-            // Draw sticker
-            ctx.drawImage(
-                sticker,
-                -sticker.width / 2,
-                -sticker.height / 2,
-                sticker.width,
-                sticker.height
-            );
-
-            ctx.restore();
-        }
+        ctx.restore();
     }
 
-    // Load all nanobanana sticker images
-    async loadStickers() {
-        const promises = this.nanobananaSources.map(src => {
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                img.onload = () => resolve(img);
-                img.onerror = reject;
-                img.src = src;
-            });
+    // Add nanobanana stickers to the context
+    async addStickers(ctx, width, height) {
+        const count = CONFIG.decorations.nanobananaCount;
+
+        console.log(`Adding ${count} programmatic stickers...`);
+
+        for (let i = 0; i < count; i++) {
+            // Random position (avoiding edges)
+            const x = Math.random() * (width * 0.8) + (width * 0.1);
+            const y = Math.random() * (height * 0.8) + (height * 0.1);
+
+            // Random scale
         });
 
         return Promise.all(promises);
