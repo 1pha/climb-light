@@ -108,9 +108,19 @@ class FrameDecorator {
             const y = Math.random() * (height * 0.8) + (height * 0.1);
 
             // Random scale
-        });
+            const scale = CONFIG.decorations.randomScale
+                ? CONFIG.decorations.scaleRange[0] + Math.random() * (CONFIG.decorations.scaleRange[1] - CONFIG.decorations.scaleRange[0])
+                : 1;
 
-        return Promise.all(promises);
+            // Random rotation
+            const rotation = CONFIG.decorations.randomRotation
+                ? CONFIG.decorations.rotationRange[0] + Math.random() * (CONFIG.decorations.rotationRange[1] - CONFIG.decorations.rotationRange[0])
+                : 0;
+
+            const size = Math.min(width, height) * 0.2 * scale; // 20% of screen size
+
+            this.drawNanobanana(ctx, x, y, size, rotation);
+        }
     }
 
     // Helper: random number in range
