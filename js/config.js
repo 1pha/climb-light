@@ -12,10 +12,10 @@ const CONFIG = {
 
     // Prompt for highlight detection
     systemPrompt: `Analyze this climbing video frame and rate how likely it is a highlight moment (0-100).
-Consider: dynamic movement, challenging holds, impressive technique, reaching summits, celebrations, difficult positions.
+Consider: dynamic movement, challenging holds, impressive technique, reaching summits, celebrations, difficult positions, or just fun moments.
 Respond with ONLY a number between 0-100, nothing else.`,
 
-    highlightThreshold: 65 // Frames scoring above this are considered highlights
+    highlightThreshold: 35 // Frames scoring above this are considered highlights
   },
 
   // Video Processing Settings
