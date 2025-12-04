@@ -26,27 +26,86 @@
             </div>
 
             <div id="resultsGrid" class="results-grid">
-                <div class="upload-icon" style="font-size: 5rem;">🤔</div>
-                <h2>No highlights found</h2>
-                <p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: var(--spacing-lg);">
-                    It looks like we couldn't find any highlights. Try uploading a video first!
-                </p>
-                <a href="upload.html" class="btn btn-primary btn-large">Upload Video</a>
+                <!-- Results will be injected here by JS -->
+                <div class="loading-spinner"></div>
             </div>
-    </div>
-    </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 Climb Light. All rights reserved.</p>
-        </div>
-    </footer>
+            <div id="noResults" class="results-grid" hidden>
+                <div class="upload-icon" style="font-size: 5rem;">🤔</div>
+                <h2>하이라이트를 찾을 수 없습니다</h2>
+                <p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 2rem;">
+                    영상을 먼저 업로드해주세요!
+                </p>
+                <a href="upload.html" class="btn btn-primary btn-large">영상 업로드하기</a>
+            </div>
+
+            <div class="action-buttons">
+                <button id="shareBtn" class="btn btn-secondary">
+                    <i class="fas fa-share-alt"></i> 공유하기
+                </button>
+                <a href="upload.html" class="btn btn-primary">
+                    <i class="fas fa-redo"></i> 다른 영상 분석하기
+                </a>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 Climb Light. Powered by Google Gemini.</p>
+        </footer>
+    </div>
 
     <!-- Scripts -->
     <script src="js/config.js"></script>
     <script src="js/decoration.js"></script>
-    <script src="js/main.js"></script>
+    <script>
+        // Load results from localStorage
+        document.addEventListener('DOMContentLoaded', async () => {
+            const resultsGrid = document.getElementById('resultsGrid');
+            const noResults = document.getElementById('noResults');
+            const highlightsJson = localStorage.getItem('climbLight_highlights');
+
+            if (!highlightsJson) {
+                resultsGrid.hidden = true;
+                noResults.hidden = false;
+                return;
+            }
+
+            const highlights = JSON.parse(highlightsJson);
+
+            if (!highlights || highlights.length === 0) {
+                resultsGrid.hidden = true;
+                noResults.hidden = false;
+                return;
+            }
+
+            resultsGrid.innerHTML = ''; // Clear loading
+
+            const decorator = new FrameDecorator();
+
+            // Display each highlight
+            highlights.forEach((highlight, index) => {
+                const card = decorator.createResultCard(highlight, index);
+                resultsGrid.appendChild(card);
+            });
+        });
+
+        // Share functionality
+        document.getElementById('shareBtn').addEventListener('click', async () => {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'Climb Light 하이라이트',
+                        text: '제 클라이밍 하이라이트를 확인해보세요! 🧗',
+                        url: window.location.href
+                    });
+                } catch (err) {
+                    console.log('Error sharing:', err);
+                }
+            } else {
+                alert('공유하기 기능을 지원하지 않는 브라우저입니다.');
+            }
+        });
+    </script>
 </body>
 
 </html>
