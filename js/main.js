@@ -2,6 +2,10 @@
 
 // Initialize Google Ads (if enabled)
 function initGoogleAds() {
+    if (typeof CONFIG === 'undefined') {
+        console.warn('CONFIG not loaded yet');
+        return;
+    }
     if (CONFIG.ads.enabled && CONFIG.ads.publisherId !== 'ca-pub-XXXXXXXXXX') {
         // Google Ads script is loaded in HTML head
         // Individual ad units should be initialized in their respective HTML files
