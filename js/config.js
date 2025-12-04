@@ -7,8 +7,8 @@ const CONFIG = {
   ai: {
     provider: 'gemini', // Using Google Gemini
     apiKey: 'YOUR_GOOGLE_GEMINI_API_KEY_HERE', // ⚠️ Add your API key here
-    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
-    model: 'gemini-1.5-flash',
+    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-001:generateContent',
+    model: 'gemini-1.5-flash-001',
 
     // Prompt for highlight detection
     systemPrompt: `Analyze this climbing video frame and rate how likely it is a highlight moment (0-100).
