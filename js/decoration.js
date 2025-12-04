@@ -1,134 +1,81 @@
-// Decoration System - Adds nanobanana stickers to highlight frames
-// Handles image decoration and export
+// Result Card System - Displays highlight frames with reasons and actions
+// Handles image export and UI generation
 
 class FrameDecorator {
     constructor() {
-        this.nanobananaSources = [
-            'assets/nanobanana_sticker_1_1764822285404.png',
-            'assets/nanobanana_sticker_2_1764822299659.png',
-            'assets/nanobanana_sticker_3_1764822328853.png'
-        ];
+        // No more stickers!
     }
 
-    // Decorate a frame with nanobanana stickers
+    // Process a frame (now just passes through, no decoration)
     async decorateFrame(frameDataUrl) {
-        return new Promise((resolve, reject) => {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            const baseImage = new Image();
-
-            baseImage.onload = async () => {
-                try {
-                    // Set canvas size to match image
-                    canvas.width = baseImage.width;
-                    canvas.height = baseImage.height;
-
-                    // Draw base image first (the video frame)
-                    ctx.drawImage(baseImage, 0, 0);
-
-                    console.log('Base image drawn:', canvas.width, 'x', canvas.height);
-
-                    // Add nanobanana stickers on top
-                    await this.addStickers(ctx, canvas.width, canvas.height);
-
-                    // Return the decorated image
-                    const result = canvas.toDataURL('image/png');
-                    console.log('Decoration complete, data URL length:', result.length);
-                    resolve(result);
-                } catch (error) {
-                    console.error('Error during decoration:', error);
-                    // If decoration fails, just return the base image
-                    resolve(frameDataUrl);
-                }
-            };
-
-            baseImage.onerror = (error) => {
-                console.error('Error loading base image:', error);
-                reject(error);
-            };
-
-            baseImage.src = frameDataUrl;
-        });
+        return frameDataUrl; // Return original frame without changes
     }
 
-    // Draw a programmatic Nanobanana sticker
-    drawNanobanana(ctx, x, y, size, rotation) {
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate((rotation * Math.PI) / 180);
+    // Create a result card element
+    createResultCard(highlight, index) {
+        const card = document.createElement('div');
+        card.className = 'card result-card fade-in';
+        card.style.animationDelay = `${index * 0.1}s`;
 
-        const s = size / 100; // Scale factor based on 100px reference size
-        ctx.scale(s, s);
+        // Create image container
+        const imgContainer = document.createElement('div');
+        imgContainer.className = 'result-image-container';
 
-        // Draw Banana Body
-        ctx.beginPath();
-        ctx.moveTo(-20, -40);
-        ctx.quadraticCurveTo(40, -10, 20, 50); // Outer curve
-        ctx.quadraticCurveTo(-10, 40, -30, 0); // Inner curve
-        ctx.quadraticCurveTo(-35, -20, -20, -40); // Top join
-        ctx.closePath();
+        const img = document.createElement('img');
+        img.src = highlight.dataUrl; // Use original frame
+        img.alt = `Highlight ${index + 1}`;
+        img.className = 'result-image';
 
-        ctx.fillStyle = '#FFD700'; // Banana Yellow
-        ctx.fill();
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = '#FFFFFF'; // White outline
-        ctx.stroke();
+        // Add score badge
+        const badge = document.createElement('div');
+        badge.className = 'score-badge';
+        badge.textContent = `점수: ${highlight.score}`;
 
-        // Sunglasses
-        ctx.fillStyle = 'black';
-        ctx.beginPath();
-        ctx.moveTo(-15, -10);
-        ctx.lineTo(5, -5);
-        ctx.lineTo(25, -15);
-        ctx.lineTo(22, 5);
-        ctx.lineTo(2, 8);
-        ctx.lineTo(-18, 5);
-        ctx.closePath();
-        ctx.fill();
+        imgContainer.appendChild(img);
+        imgContainer.appendChild(badge);
 
-        // Smile
-        ctx.beginPath();
-        ctx.arc(0, 15, 10, 0.2 * Math.PI, 0.8 * Math.PI);
-        ctx.strokeStyle = 'black';
-        ctx.lineWidth = 2;
-        ctx.stroke();
+        // Create content container
+        const content = document.createElement('div');
+        content.className = 'result-content';
 
-        ctx.restore();
+        // Reason text
+        const reason = document.createElement('p');
+        reason.className = 'highlight-reason';
+        reason.style.cssText = 'margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.5; color: var(--text-color);';
+        reason.textContent = highlight.reason || 'AI가 선정한 최고의 순간입니다.';
+
+        // Action buttons container
+        const actions = document.createElement('div');
+        actions.className = 'result-actions';
+        actions.style.cssText = 'display: flex; gap: 0.5rem; margin-top: auto;';
+
+        // Download Button
+        const downloadBtn = document.createElement('button');
+        downloadBtn.className = 'btn btn-secondary btn-sm';
+        downloadBtn.innerHTML = '💾 저장';
+        downloadBtn.style.flex = '1';
+        downloadBtn.onclick = () => this.downloadImage(highlight.dataUrl, `climb-light-highlight-${index + 1}.png`);
+
+        // Further Usage Button
+        const usageBtn = document.createElement('button');
+        usageBtn.className = 'btn btn-primary btn-sm';
+        usageBtn.innerHTML = '✨ 꾸미기';
+        usageBtn.style.flex = '1';
+        usageBtn.onclick = () => window.open('https://ai.google.dev/gemini-api/docs/image-generation#javascript_1', '_blank');
+
+        actions.appendChild(downloadBtn);
+        actions.appendChild(usageBtn);
+
+        content.appendChild(reason);
+        content.appendChild(actions);
+
+        card.appendChild(imgContainer);
+        card.appendChild(content);
+
+        return card;
     }
 
-    // Add nanobanana stickers to the context
-    async addStickers(ctx, width, height) {
-        const count = CONFIG.decorations.nanobananaCount;
-
-        console.log(`Adding ${count} programmatic stickers...`);
-
-        for (let i = 0; i < count; i++) {
-            // Random position (avoiding edges)
-            const x = Math.random() * (width * 0.8) + (width * 0.1);
-            const y = Math.random() * (height * 0.8) + (height * 0.1);
-
-            // Random scale
-            const scale = CONFIG.decorations.randomScale
-                ? CONFIG.decorations.scaleRange[0] + Math.random() * (CONFIG.decorations.scaleRange[1] - CONFIG.decorations.scaleRange[0])
-                : 1;
-
-            // Random rotation
-            const rotation = CONFIG.decorations.randomRotation
-                ? CONFIG.decorations.rotationRange[0] + Math.random() * (CONFIG.decorations.rotationRange[1] - CONFIG.decorations.rotationRange[0])
-                : 0;
-
-            const size = Math.min(width, height) * 0.2 * scale; // 20% of screen size
-
-            this.drawNanobanana(ctx, x, y, size, rotation);
-        }
-    }
-
-    // Helper: random number in range
-    randomInRange(min, max) {
-        return min + Math.random() * (max - min);
-    }
-
-    // Download decorated image
+    // Download image
     downloadImage(dataUrl, filename) {
         const link = document.createElement('a');
         link.href = dataUrl;
@@ -169,20 +116,6 @@ if (window.location.pathname.includes('results.html')) {
             const highlight = highlights[i];
 
             try {
-                // Decorate frame
-                const decoratedDataUrl = await decorator.decorateFrame(highlight.dataUrl);
-
-                // Create result card
-                const card = createResultCard(highlight, decoratedDataUrl, i);
-                resultsGrid.appendChild(card);
-
-                // Animate card appearance with delay
-                setTimeout(() => {
-                    card.style.opacity = '1';
-                    card.classList.add('fade-in');
-                }, i * 100);
-            } catch (error) {
-                console.error(`Error decorating frame ${i}:`, error);
                 // Still show the frame even if decoration fails
                 const card = createResultCard(highlight, highlight.dataUrl, i);
                 resultsGrid.appendChild(card);

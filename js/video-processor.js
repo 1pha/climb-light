@@ -136,18 +136,18 @@ class VideoProcessor {
             const frame = this.frames[i];
 
             try {
-                const score = await this.analyzeFrame(frame.dataUrl);
+                const result = await this.analyzeFrame(frame.dataUrl);
 
-                // Store all frames with their scores
+                // Store all frames with their scores and reasons
                 scoredFrames.push({
                     ...frame,
-                    score: score,
-                    reason: 'AI detected highlight moment'
+                    score: result.score,
+                    reason: result.reason || 'AI가 감지한 하이라이트'
                 });
 
                 // Update progress
                 const analysisProgress = 40 + ((i + 1) / this.frames.length) * 40;
-                this.updateProgress(analysisProgress, `Analyzing frame ${i + 1}/${this.frames.length}...`);
+                this.updateProgress(analysisProgress, `프레임 분석 중 ${i + 1}/${this.frames.length}...`);
 
             } catch (error) {
                 console.error(`Error analyzing frame ${i}:`, error);
@@ -155,7 +155,7 @@ class VideoProcessor {
                 scoredFrames.push({
                     ...frame,
                     score: 0,
-                    reason: 'Analysis failed'
+                    reason: '분석 실패'
                 });
             }
         }
@@ -208,13 +208,22 @@ class VideoProcessor {
 
         const data = await response.json();
 
-        // Extract the score from Gemini's response
+        // Extract the score and reason from Gemini's response
         const responseText = data.candidates[0].content.parts[0].text.trim();
-        const score = parseInt(responseText) || 0;
 
-        console.log('Gemini API response:', responseText, '-> score:', score);
+        // Clean up markdown code blocks if present
+        const jsonStr = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
 
-        return score;
+        try {
+            const result = JSON.parse(jsonStr);
+            console.log('Gemini API response:', result);
+            return result; // Returns { score: number, reason: string }
+        } catch (e) {
+            console.error('Failed to parse JSON response:', responseText);
+            // Fallback for non-JSON response
+            const score = parseInt(responseText) || 0;
+            return { score, reason: "하이라이트 분석 완료" };
+        }
     }
 
     // Get random reason for demo mode
