@@ -69,7 +69,7 @@
     <script src="js/main.js"></script>
     <script src="js/video-processor.js"></script>
     <script>
-        // Simple file handling logic
+        // File handling and UI logic
         const dropZone = document.getElementById('dropZone');
         const videoInput = document.getElementById('videoInput');
         const analyzeBtn = document.getElementById('analyzeBtn');
@@ -78,33 +78,92 @@
         const removeFileBtn = document.getElementById('removeFileBtn');
         const placeholder = dropZone.querySelector('.upload-placeholder');
 
+        const processingStatus = document.getElementById('processingStatus');
+        const progressBar = document.getElementById('progressBar');
+        const statusText = document.getElementById('statusText');
+        const statusDetail = document.getElementById('statusDetail');
+
         dropZone.addEventListener('click', () => videoInput.click());
 
-        videoInput.addEventListener('change', handleFileSelect);
+        // Drag and drop support
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragging');
+        });
 
-        function handleFileSelect(e) {
-            const file = e.target.files[0];
-            if (file) {
-                fileName.textContent = file.name;
-                placeholder.hidden = true;
-                uploadPreview.hidden = false;
-                analyzeBtn.disabled = false;
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragging');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragging');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) handleFile(files[0]);
+        });
+
+        videoInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) handleFile(e.target.files[0]);
+        });
+
+        function handleFile(file) {
+            // Basic validation
+            if (!file.type.startsWith('video/')) {
+                alert('비디오 파일만 업로드 가능합니다.');
+                return;
             }
+
+            // Update UI
+            fileName.textContent = file.name;
+            placeholder.hidden = true;
+            uploadPreview.hidden = false;
+            analyzeBtn.disabled = false;
+
+            // Store file in input for consistency
+            // Note: We can't programmatically set files on input, but we have the file object
+            videoInput.currentFile = file;
         }
 
         removeFileBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             videoInput.value = '';
+            videoInput.currentFile = null;
             placeholder.hidden = false;
             uploadPreview.hidden = true;
             analyzeBtn.disabled = true;
         });
 
-        analyzeBtn.addEventListener('click', () => {
-            const file = videoInput.files[0];
-            if (file) {
-                const processor = new VideoProcessor();
-                processor.processVideo(file);
+        analyzeBtn.addEventListener('click', async () => {
+            const file = videoInput.currentFile || videoInput.files[0];
+            if (!file) return;
+
+            // UI State: Processing
+            dropZone.hidden = true;
+            analyzeBtn.hidden = true;
+            processingStatus.hidden = false;
+
+            const processor = new VideoProcessor();
+
+            try {
+                await processor.processVideo(file, (percent, message) => {
+                    progressBar.style.width = `${percent}%`;
+                    statusDetail.textContent = message;
+                    statusText.textContent = `처리 중... ${Math.round(percent)}%`;
+                });
+
+                // Success
+                statusText.textContent = '완료!';
+                setTimeout(() => {
+                    window.location.href = 'results.html';
+                }, 500);
+            } catch (error) {
+                console.error(error);
+                alert('오류가 발생했습니다: ' + error.message);
+
+                // Reset UI
+                dropZone.hidden = false;
+                analyzeBtn.hidden = false;
+                processingStatus.hidden = true;
             }
         });
     </script>
