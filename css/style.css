@@ -14,14 +14,14 @@
   --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
   --success-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
   --warm-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-  
+
   --bg-primary: #f8f9ff;
   --bg-secondary: #ffffff;
   --bg-dark: #1a1a2e;
   --text-primary: #2d3748;
   --text-secondary: #718096;
   --text-light: #a0aec0;
-  
+
   /* Spacing */
   --spacing-xs: 0.5rem;
   --spacing-sm: 1rem;
@@ -29,26 +29,26 @@
   --spacing-lg: 2rem;
   --spacing-xl: 3rem;
   --spacing-xxl: 4rem;
-  
+
   /* Border Radius */
   --radius-sm: 8px;
   --radius-md: 16px;
   --radius-lg: 24px;
   --radius-xl: 32px;
   --radius-full: 9999px;
-  
+
   /* Shadows */
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.15);
   --shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.2);
   --shadow-glow: 0 0 20px rgba(102, 126, 234, 0.3);
-  
+
   /* Transitions */
   --transition-fast: 0.2s ease;
   --transition-base: 0.3s ease;
   --transition-slow: 0.5s ease;
-  
+
   /* Typography */
   --font-primary: 'Outfit', sans-serif;
   --font-secondary: 'Poppins', sans-serif;
@@ -74,7 +74,12 @@ body {
 }
 
 /* === TYPOGRAPHY === */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-primary);
   font-weight: 700;
   line-height: 1.2;
@@ -258,8 +263,13 @@ p {
 }
 
 @keyframes backgroundScroll {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(60px, 60px); }
+  0% {
+    transform: translate(0, 0);
+  }
+
+  100% {
+    transform: translate(60px, 60px);
+  }
 }
 
 .hero-content {
@@ -371,8 +381,13 @@ p {
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 /* === LOADING ANIMATION === */
@@ -394,7 +409,9 @@ p {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .loading-text {
@@ -513,17 +530,45 @@ p {
   text-align: center;
 }
 
-.mt-1 { margin-top: var(--spacing-xs); }
-.mt-2 { margin-top: var(--spacing-sm); }
-.mt-3 { margin-top: var(--spacing-md); }
-.mt-4 { margin-top: var(--spacing-lg); }
-.mt-5 { margin-top: var(--spacing-xl); }
+.mt-1 {
+  margin-top: var(--spacing-xs);
+}
 
-.mb-1 { margin-bottom: var(--spacing-xs); }
-.mb-2 { margin-bottom: var(--spacing-sm); }
-.mb-3 { margin-bottom: var(--spacing-md); }
-.mb-4 { margin-bottom: var(--spacing-lg); }
-.mb-5 { margin-bottom: var(--spacing-xl); }
+.mt-2 {
+  margin-top: var(--spacing-sm);
+}
+
+.mt-3 {
+  margin-top: var(--spacing-md);
+}
+
+.mt-4 {
+  margin-top: var(--spacing-lg);
+}
+
+.mt-5 {
+  margin-top: var(--spacing-xl);
+}
+
+.mb-1 {
+  margin-bottom: var(--spacing-xs);
+}
+
+.mb-2 {
+  margin-bottom: var(--spacing-sm);
+}
+
+.mb-3 {
+  margin-bottom: var(--spacing-md);
+}
+
+.mb-4 {
+  margin-bottom: var(--spacing-lg);
+}
+
+.mb-5 {
+  margin-bottom: var(--spacing-xl);
+}
 
 .hidden {
   display: none !important;
@@ -535,6 +580,7 @@ p {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -542,7 +588,8 @@ p {
 }
 
 .fade-in {
-  animation: fadeIn 0.6s ease-out;
+  animation: fadeIn 0.6s ease-out forwards;
+  opacity: 1 !important;
 }
 
 @keyframes slideInUp {
@@ -550,6 +597,7 @@ p {
     opacity: 0;
     transform: translateY(40px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -561,9 +609,12 @@ p {
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.05);
   }
@@ -579,27 +630,27 @@ p {
     --spacing-xl: 2rem;
     --spacing-xxl: 3rem;
   }
-  
+
   .header-content {
     padding: 0 var(--spacing-sm);
   }
-  
+
   .hero {
     min-height: 100vh;
   }
-  
+
   .hero-content {
     padding: var(--spacing-md);
   }
-  
+
   .results-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .section {
     padding: var(--spacing-lg) 0;
   }
-  
+
   .btn-large {
     padding: var(--spacing-sm) var(--spacing-lg);
     font-size: 1.1rem;
@@ -610,11 +661,11 @@ p {
   h1 {
     font-size: 2rem;
   }
-  
+
   .upload-area {
     padding: var(--spacing-lg);
   }
-  
+
   .upload-icon {
     font-size: 3rem;
   }

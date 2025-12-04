@@ -18,23 +18,35 @@ class FrameDecorator {
             const baseImage = new Image();
 
             baseImage.onload = async () => {
-                // Set canvas size to match image
-                canvas.width = baseImage.width;
-                canvas.height = baseImage.height;
-
-                // Draw base image
-                ctx.drawImage(baseImage, 0, 0);
-
-                // Add nanobanana stickers
                 try {
+                    // Set canvas size to match image
+                    canvas.width = baseImage.width;
+                    canvas.height = baseImage.height;
+
+                    // Draw base image first (the video frame)
+                    ctx.drawImage(baseImage, 0, 0);
+
+                    console.log('Base image drawn:', canvas.width, 'x', canvas.height);
+
+                    // Add nanobanana stickers on top
                     await this.addStickers(ctx, canvas.width, canvas.height);
-                    resolve(canvas.toDataURL('image/png'));
+
+                    // Return the decorated image
+                    const result = canvas.toDataURL('image/png');
+                    console.log('Decoration complete, data URL length:', result.length);
+                    resolve(result);
                 } catch (error) {
-                    reject(error);
+                    console.error('Error during decoration:', error);
+                    // If decoration fails, just return the base image
+                    resolve(frameDataUrl);
                 }
             };
 
-            baseImage.onerror = reject;
+            baseImage.onerror = (error) => {
+                console.error('Error loading base image:', error);
+                reject(error);
+            };
+
             baseImage.src = frameDataUrl;
         });
     }
@@ -148,17 +160,29 @@ if (window.location.pathname.includes('results.html')) {
         for (let i = 0; i < highlights.length; i++) {
             const highlight = highlights[i];
 
-            // Decorate frame
-            const decoratedDataUrl = await decorator.decorateFrame(highlight.dataUrl);
+            try {
+                // Decorate frame
+                const decoratedDataUrl = await decorator.decorateFrame(highlight.dataUrl);
 
-            // Create result card
-            const card = createResultCard(highlight, decoratedDataUrl, i);
-            resultsGrid.appendChild(card);
+                // Create result card
+                const card = createResultCard(highlight, decoratedDataUrl, i);
+                resultsGrid.appendChild(card);
 
-            // Animate card appearance
-            setTimeout(() => {
-                card.classList.add('fade-in');
-            }, i * 100);
+                // Animate card appearance with delay
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.classList.add('fade-in');
+                }, i * 100);
+            } catch (error) {
+                console.error(`Error decorating frame ${i}:`, error);
+                // Still show the frame even if decoration fails
+                const card = createResultCard(highlight, highlight.dataUrl, i);
+                resultsGrid.appendChild(card);
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.classList.add('fade-in');
+                }, i * 100);
+            }
         }
     }
 
