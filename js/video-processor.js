@@ -158,46 +158,49 @@ class VideoProcessor {
         return highlights.sort((a, b) => b.score - a.score); // Sort by score descending
     }
 
-    // Call OpenAI Vision API to analyze a single frame
+    // Call Google Gemini Vision API to analyze a single frame
     async analyzeFrame(imageDataUrl) {
         const base64Image = imageDataUrl.split(',')[1];
 
-        const response = await fetch(CONFIG.ai.endpoint, {
+        const requestBody = {
+            contents: [{
+                parts: [
+                    {
+                        text: CONFIG.ai.systemPrompt
+                    },
+                    {
+                        inline_data: {
+                            mime_type: "image/jpeg",
+                            data: base64Image
+                        }
+                    }
+                ]
+            }]
+        };
+
+        const response = await fetch(`${CONFIG.ai.endpoint}?key=${CONFIG.ai.apiKey}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${CONFIG.ai.apiKey}`
             },
-            body: JSON.stringify({
-                model: CONFIG.ai.model,
-                messages: [
-                    {
-                        role: 'system',
-                        content: CONFIG.ai.systemPrompt
-                    },
-                    {
-                        role: 'user',
-                        content: [
-                            {
-                                type: 'image_url',
-                                image_url: {
-                                    url: `data:image/jpeg;base64,${base64Image}`
-                                }
-                            }
-                        ]
-                    }
-                ],
-                max_tokens: 10
-            })
+            body: JSON.stringify(requestBody)
         });
 
         if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Gemini API error:', errorText);
             throw new Error(`API call failed: ${response.statusText}`);
         }
 
         const data = await response.json();
-        const scoreText = data.choices[0].message.content.trim();
-        return parseInt(scoreText) || 0;
+
+        // Extract the score from Gemini's response
+        const responseText = data.candidates[0].content.parts[0].text.trim();
+        const score = parseInt(responseText) || 0;
+
+        console.log('Gemini API response:', responseText, '-> score:', score);
+
+        return score;
     }
 
     // Get random reason for demo mode

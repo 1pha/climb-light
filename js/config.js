@@ -3,21 +3,19 @@
 
 const CONFIG = {
   // AI API Configuration
-  // Currently configured for OpenAI Vision API
-  // You can also use: Google Cloud Video Intelligence, Roboflow, etc.
+  // Using Google Gemini Vision API
   ai: {
-    provider: 'openai', // Options: 'openai', 'demo'
-    apiKey: 'YOUR_OPENAI_API_KEY_HERE', // Replace with your actual API key
-    endpoint: 'https://api.openai.com/v1/chat/completions',
-    model: 'gpt-4o-mini', // or 'gpt-4-vision-preview'
+    provider: 'gemini', // Using Google Gemini
+    apiKey: 'AIzaSyAhM7TVn6k2ZF_wIJ8dUFpGaQK3WBioEkg',
+    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
+    model: 'gemini-1.5-flash',
 
     // Prompt for highlight detection
-    systemPrompt: `You are an expert at analyzing climbing videos. 
-    Analyze this frame and rate how likely it is a highlight moment (0-100).
-    Consider: dynamic movement, challenging holds, impressive technique, reaching summits, falls, celebrations.
-    Respond with ONLY a number 0-100.`,
+    systemPrompt: `Analyze this climbing video frame and rate how likely it is a highlight moment (0-100).
+Consider: dynamic movement, challenging holds, impressive technique, reaching summits, celebrations, difficult positions.
+Respond with ONLY a number between 0-100, nothing else.`,
 
-    highlightThreshold: 60 // Frames scoring above this are considered highlights
+    highlightThreshold: 65 // Frames scoring above this are considered highlights
   },
 
   // Video Processing Settings
@@ -47,7 +45,7 @@ const CONFIG = {
   app: {
     name: 'Climb Light',
     version: '1.0.0',
-    demoMode: true, // Set to false when you have a real API key
+    demoMode: false, // Real AI enabled!
   }
 };
 
