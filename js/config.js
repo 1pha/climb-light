@@ -15,7 +15,7 @@ const CONFIG = {
 Consider: dynamic movement, challenging holds, impressive technique, reaching summits, celebrations, difficult positions, or just fun moments.
 Respond with ONLY a number between 0-100, nothing else.`,
 
-    highlightThreshold: 35 // Frames scoring above this are considered highlights
+    topN: 5 // Show top N highest-scoring frames (guarantees results!)
   },
 
   // Video Processing Settings

@@ -128,9 +128,9 @@ class VideoProcessor {
         return highlights.sort((a, b) => a.timestamp - b.timestamp);
     }
 
-    // Analyze frames with OpenAI Vision API
+    // Analyze frames with AI and return top N
     async analyzeWithAI() {
-        const highlights = [];
+        const scoredFrames = [];
 
         for (let i = 0; i < this.frames.length; i++) {
             const frame = this.frames[i];
@@ -138,13 +138,12 @@ class VideoProcessor {
             try {
                 const score = await this.analyzeFrame(frame.dataUrl);
 
-                if (score >= CONFIG.ai.highlightThreshold) {
-                    highlights.push({
-                        ...frame,
-                        score: score,
-                        reason: 'AI detected highlight moment'
-                    });
-                }
+                // Store all frames with their scores
+                scoredFrames.push({
+                    ...frame,
+                    score: score,
+                    reason: 'AI detected highlight moment'
+                });
 
                 // Update progress
                 const analysisProgress = 40 + ((i + 1) / this.frames.length) * 40;
@@ -152,10 +151,25 @@ class VideoProcessor {
 
             } catch (error) {
                 console.error(`Error analyzing frame ${i}:`, error);
+                // Add frame with score 0 if analysis fails
+                scoredFrames.push({
+                    ...frame,
+                    score: 0,
+                    reason: 'Analysis failed'
+                });
             }
         }
 
-        return highlights.sort((a, b) => b.score - a.score); // Sort by score descending
+        // Sort by score descending and take top N
+        const topN = CONFIG.ai.topN || 5;
+        const highlights = scoredFrames
+            .sort((a, b) => b.score - a.score)
+            .slice(0, topN);
+
+        console.log(`Selected top ${topN} frames from ${scoredFrames.length} analyzed`);
+        console.log('Scores:', highlights.map(h => h.score));
+
+        return highlights;
     }
 
     // Call Google Gemini Vision API to analyze a single frame
