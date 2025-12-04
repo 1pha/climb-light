@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Highlights - Climb Light</title>
+    <meta name="description" content="Your climbing video highlights">
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <img src="assets/logo.png" alt="Climb Light Logo">
+                    Climb Light
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Results Section -->
+    <section class="section">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: var(--spacing-xl);">
+                <h1>🎉 Your Climbing Highlights!</h1>
+                <p style="font-size: 1.1rem; color: var(--text-secondary);">
+                    Here are the most epic moments from your video, decorated with nanobananas! 🍌
+                </p>
+                <div style="margin-top: var(--spacing-md);">
+                    <a href="upload.html" class="btn btn-primary">📹 Upload Another Video</a>
+                    <button id="shareBtn" class="btn btn-secondary">📤 Share Results</button>
+                </div>
+            </div>
+
+            <!-- Google Ads - Top Banner -->
+            <div class="ad-container">
+                <div class="ad-placeholder">Advertisement</div>
+            </div>
+
+            <!-- Results Grid -->
+            <div id="resultsGrid" class="results-grid">
+                <!-- Results will be populated by JavaScript -->
+            </div>
+
+            <!-- Google Ads - Bottom Banner -->
+            <div class="ad-container" style="margin-top: var(--spacing-xl);">
+                <div class="ad-placeholder">Advertisement</div>
+            </div>
+
+            <!-- No Results Message (Hidden by default) -->
+            <div id="noResults" class="hidden text-center" style="padding: var(--spacing-xxl);">
+                <div class="upload-icon" style="font-size: 5rem;">🤔</div>
+                <h2>No highlights found</h2>
+                <p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: var(--spacing-lg);">
+                    It looks like we couldn't find any highlights. Try uploading a video first!
+                </p>
+                <a href="upload.html" class="btn btn-primary btn-large">Upload Video</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Climb Light. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/decoration.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

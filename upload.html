@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Video - Climb Light</title>
+    <meta name="description" content="Upload your climbing video to extract highlight moments">
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <img src="assets/logo.png" alt="Climb Light Logo">
+                    Climb Light
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Upload Section -->
+    <section class="section">
+        <div class="container">
+            <h1 class="text-center">Upload Your Climbing Video</h1>
+            <p class="text-center" style="font-size: 1.1rem; max-width: 600px; margin: 0 auto var(--spacing-xl) auto;">
+                Drop your video below and watch the magic happen! ✨
+            </p>
+
+            <!-- Upload Area -->
+            <div class="card" style="max-width: 800px; margin: 0 auto;">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📹</div>
+                    <div class="upload-text">
+                        <h3>Drag & Drop Your Video</h3>
+                        <p>or click to browse</p>
+                        <p style="font-size: 0.875rem; color: var(--text-light); margin-top: var(--spacing-sm);">
+                            Supports: MP4, MOV, AVI (Max 500MB)
+                        </p>
+                    </div>
+                    <input type="file" id="fileInput" class="file-input" accept="video/*">
+                </div>
+
+                <!-- Progress Section (Hidden initially) -->
+                <div id="progressSection" class="hidden" style="margin-top: var(--spacing-lg);">
+                    <h3>Processing Your Video...</h3>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                    </div>
+                    <p id="progressText" style="text-align: center; margin-top: var(--spacing-sm);">0%</p>
+                </div>
+
+                <!-- Loading Animation (Hidden initially) -->
+                <div id="loadingSection" class="hidden loading">
+                    <div class="spinner"></div>
+                    <p class="loading-text">🤖 AI is analyzing your video...</p>
+                    <p style="color: var(--text-light); margin-top: var(--spacing-sm);">This may take a few moments</p>
+                </div>
+            </div>
+
+            <!-- Google Ads - Below Upload -->
+            <div class="ad-container" style="margin-top: var(--spacing-xl);">
+                <div class="ad-placeholder">Advertisement</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Climb Light. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/video-processor.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

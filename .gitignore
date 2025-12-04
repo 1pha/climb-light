@@ -1,0 +1,15 @@
+# Git ignore file for Climb Light
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Env files (if you add API keys)
+.env
+.env.local
+
+# Logs
+*.log
