@@ -6,7 +6,7 @@ const CONFIG = {
   // Using Google Gemini Vision API
   ai: {
     provider: 'gemini', // Using Google Gemini
-    apiKey: 'AIzaSyAhM7TVn6k2ZF_wIJ8dUFpGaQK3WBioEkg',
+    apiKey: 'YOUR_GOOGLE_GEMINI_API_KEY_HERE', // ⚠️ Add your API key here
     endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
     model: 'gemini-1.5-flash',
 
@@ -22,8 +22,8 @@ Respond with ONLY a number between 0-100, nothing else.`,
   video: {
     maxSizeMB: 500,
     acceptedFormats: ['video/mp4', 'video/quicktime', 'video/x-msvideo', 'video/webm'],
-    frameExtractionInterval: 2, // Extract 1 frame every N seconds
-    maxFramesToAnalyze: 20 // Limit frames sent to AI (cost control)
+    frameExtractionInterval: 1, // Extract 1 frame every N seconds
+    maxFramesToAnalyze: 30 // Limit frames sent to AI (cost control)
   },
 
   // Google AdSense Configuration
