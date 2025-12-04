@@ -1,68 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-adsense-account" content="ca-pub-4436266100487526">
-    <title>Your Highlights - Climb Light</title>
-    <meta name="description" content="Your climbing video highlights">
-    <link rel="icon" type="image/png" href="assets/logo.png">
+    <title>분석 결과 - Climb Light</title>
     <link rel="stylesheet" href="css/style.css">
-
-    <!-- Google AdSense -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Ads -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4436266100487526"
         crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <a href="index.html" class="logo">
-                    <img src="assets/logo.png" alt="Climb Light Logo">
-                    Climb Light
-                </a>
-            </div>
-        </div>
-    </header>
+    <div class="container">
+        <header class="header-compact">
+            <a href="upload.html" class="back-link"><i class="fas fa-arrow-left"></i> 다시 업로드</a>
+            <h2>분석 결과</h2>
+        </header>
 
-    <!-- Results Section -->
-    <section class="section">
-        <div class="container">
-            <div class="text-center" style="margin-bottom: var(--spacing-xl);">
-                <h1>🎉 Your Climbing Highlights!</h1>
-                <p style="font-size: 1.1rem; color: var(--text-secondary);">
-                    Here are the most epic moments from your video, decorated with nanobananas! 🍌
-                </p>
-                <div style="margin-top: var(--spacing-md);">
-                    <a href="upload.html" class="btn btn-primary">📹 Upload Another Video</a>
-                    <button id="shareBtn" class="btn btn-secondary">📤 Share Results</button>
-                </div>
+        <main class="main-content">
+            <div class="results-header">
+                <h3>🎉 최고의 순간들을 찾았습니다!</h3>
+                <p class="text-light">AI가 선정한 하이라이트 장면입니다.</p>
             </div>
 
-            <!-- Google Ads - Top Banner -->
-            <div class="ad-container">
-                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4436266100487526"
-                    data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-            </div>
-
-            <!-- Results Grid -->
             <div id="resultsGrid" class="results-grid">
-                <!-- Results will be populated by JavaScript -->
-            </div>
-
-            <!-- Google Ads - Bottom Banner -->
-            <div class="ad-container" style="margin-top: var(--spacing-xl);">
-                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4436266100487526"
-                    data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-            </div>
-
-            <!-- No Results Message (Hidden by default) -->
-            <div id="noResults" class="hidden text-center" style="padding: var(--spacing-xxl);">
                 <div class="upload-icon" style="font-size: 5rem;">🤔</div>
                 <h2>No highlights found</h2>
                 <p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: var(--spacing-lg);">
@@ -70,7 +33,7 @@
                 </p>
                 <a href="upload.html" class="btn btn-primary btn-large">Upload Video</a>
             </div>
-        </div>
+    </div>
     </section>
 
     <!-- Footer -->
