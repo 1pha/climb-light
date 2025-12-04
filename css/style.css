@@ -151,6 +151,17 @@ p {
   width: auto;
 }
 
+.logo-container-small {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-container-small img {
+  height: 30px;
+  width: auto;
+}
+
 /* === BUTTONS === */
 .btn {
   display: inline-flex;
