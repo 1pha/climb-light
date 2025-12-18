@@ -350,6 +350,14 @@ p {
   gap: var(--space-sm);
 }
 
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+  flex-wrap: wrap;
+}
+
 /* === FOOTER === */
 .footer {
   margin-top: var(--space-xl);
