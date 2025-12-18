@@ -85,7 +85,10 @@
                 return;
             }
 
-            const highlights = JSON.parse(highlightsJson);
+            let highlights = JSON.parse(highlightsJson);
+
+            // Filter out failed analysis (score 0)
+            highlights = highlights.filter(h => h.score > 0);
 
             if (!highlights || highlights.length === 0) {
                 resultsGrid.hidden = true;
@@ -95,6 +98,7 @@
 
             resultsGrid.innerHTML = ''; // Clear loading
             noResults.hidden = true; // Explicitly hide "no results" message
+            resultsGrid.hidden = false; // Ensure grid is visible
 
             const decorator = new FrameDecorator();
 
