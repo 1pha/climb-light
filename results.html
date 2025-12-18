@@ -32,7 +32,7 @@
                 <div class="loading-spinner"></div>
             </div>
 
-            <div id="noResults" class="results-grid" hidden>
+            <div id="noResults" style="text-align: center; margin-top: 4rem; display: none;">
                 <div class="upload-icon" style="font-size: 5rem;">🤔</div>
                 <h2>하이라이트를 찾을 수 없습니다</h2>
                 <p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 2rem;">
@@ -80,8 +80,8 @@
             const highlightsJson = localStorage.getItem('climbLight_highlights');
 
             if (!highlightsJson) {
-                resultsGrid.hidden = true;
-                noResults.hidden = false;
+                resultsGrid.style.display = 'none';
+                noResults.style.display = 'block';
                 return;
             }
 
@@ -91,14 +91,14 @@
             highlights = highlights.filter(h => h.score > 0);
 
             if (!highlights || highlights.length === 0) {
-                resultsGrid.hidden = true;
-                noResults.hidden = false;
+                resultsGrid.style.display = 'none';
+                noResults.style.display = 'block';
                 return;
             }
 
             resultsGrid.innerHTML = ''; // Clear loading
-            noResults.hidden = true; // Explicitly hide "no results" message
-            resultsGrid.hidden = false; // Ensure grid is visible
+            noResults.style.display = 'none'; // Explicitly hide "no results" message
+            resultsGrid.style.display = 'grid'; // Restore grid display
 
             const decorator = new FrameDecorator();
 
