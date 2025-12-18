@@ -7,8 +7,8 @@ const CONFIG = {
   ai: {
     provider: 'gemini', // Using Google Gemini
     apiKey: 'YOUR_GOOGLE_GEMINI_API_KEY_HERE', // ⚠️ Add your API key here
-    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent',
-    model: 'gemini-pro-vision',
+    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
+    model: 'gemini-1.5-flash',
 
     // Prompt for highlight detection (Korean)
     systemPrompt: `이 클라이밍 비디오 프레임을 분석하고 하이라이트 순간일 가능성을 평가해주세요 (0-100).
@@ -40,7 +40,7 @@ const CONFIG = {
   app: {
     name: 'Climb Light',
     version: '1.1.0',
-    demoMode: true, // Set to false when you have a valid API key
+    demoMode: false,
   }
 };
 
