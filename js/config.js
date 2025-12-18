@@ -40,7 +40,7 @@ const CONFIG = {
   app: {
     name: 'Climb Light',
     version: '1.1.0',
-    demoMode: false,
+    demoMode: true, // Set to false when you have a valid API key
   }
 };
 
