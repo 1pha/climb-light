@@ -135,6 +135,17 @@
             analyzeBtn.disabled = true;
         });
 
+        let isProcessing = false;
+
+        // Warn user if they try to leave during processing
+        window.addEventListener('beforeunload', (e) => {
+            if (isProcessing) {
+                e.preventDefault();
+                e.returnValue = ''; // Chrome requires returnValue to be set
+                return '영상 처리 중입니다. 페이지를 나가면 진행 상황이 손실됩니다.';
+            }
+        });
+
         analyzeBtn.addEventListener('click', async () => {
             const file = videoInput.currentFile || videoInput.files[0];
             if (!file) return;
@@ -143,6 +154,7 @@
             dropZone.hidden = true;
             analyzeBtn.hidden = true;
             processingStatus.hidden = false;
+            isProcessing = true; // Set processing flag
 
             const processor = new VideoProcessor();
 
@@ -154,12 +166,14 @@
                 });
 
                 // Success
+                isProcessing = false; // Clear processing flag
                 statusText.textContent = '완료!';
                 setTimeout(() => {
                     window.location.href = 'results.html';
                 }, 500);
             } catch (error) {
                 console.error(error);
+                isProcessing = false; // Clear processing flag
                 alert('오류가 발생했습니다: ' + error.message);
 
                 // Reset UI

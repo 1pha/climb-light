@@ -130,34 +130,40 @@ class VideoProcessor {
 
     // Analyze frames with AI and return top N
     async analyzeWithAI() {
+        const batchSize = 5; // Process 5 frames at a time to avoid rate limits
         const scoredFrames = [];
 
-        for (let i = 0; i < this.frames.length; i++) {
-            const frame = this.frames[i];
+        // Process frames in batches
+        for (let i = 0; i < this.frames.length; i += batchSize) {
+            const batch = this.frames.slice(i, i + batchSize);
 
-            try {
-                const result = await this.analyzeFrame(frame.dataUrl);
+            // Process batch in parallel
+            const batchPromises = batch.map(async (frame, batchIndex) => {
+                const frameIndex = i + batchIndex;
+                try {
+                    const result = await this.analyzeFrame(frame.dataUrl);
+                    return {
+                        ...frame,
+                        score: result.score,
+                        reason: result.reason || 'AI가 감지한 하이라이트'
+                    };
+                } catch (error) {
+                    console.error(`Error analyzing frame ${frameIndex}:`, error);
+                    return {
+                        ...frame,
+                        score: 0,
+                        reason: '분석 실패'
+                    };
+                }
+            });
 
-                // Store all frames with their scores and reasons
-                scoredFrames.push({
-                    ...frame,
-                    score: result.score,
-                    reason: result.reason || 'AI가 감지한 하이라이트'
-                });
+            // Wait for batch to complete
+            const batchResults = await Promise.all(batchPromises);
+            scoredFrames.push(...batchResults);
 
-                // Update progress
-                const analysisProgress = 40 + ((i + 1) / this.frames.length) * 40;
-                this.updateProgress(analysisProgress, `프레임 분석 중 ${i + 1}/${this.frames.length}...`);
-
-            } catch (error) {
-                console.error(`Error analyzing frame ${i}:`, error);
-                // Add frame with score 0 if analysis fails
-                scoredFrames.push({
-                    ...frame,
-                    score: 0,
-                    reason: '분석 실패'
-                });
-            }
+            // Update progress
+            const analysisProgress = 40 + ((i + batch.length) / this.frames.length) * 40;
+            this.updateProgress(analysisProgress, `프레임 분석 중 ${i + batch.length}/${this.frames.length}...`);
         }
 
         // Sort by score descending and take top N
