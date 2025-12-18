@@ -248,12 +248,8 @@ class VideoProcessor {
 
     // Save results to localStorage
     saveResults() {
-        const resultsData = {
-            highlights: this.highlights,
-            timestamp: Date.now(),
-            videoName: this.videoFile.name
-        };
-        localStorage.setItem('climbLightResults', JSON.stringify(resultsData));
+        // Save just the highlights array (matching what results.html expects)
+        localStorage.setItem('climbLight_highlights', JSON.stringify(this.highlights));
     }
 
     // Helper: sleep function
